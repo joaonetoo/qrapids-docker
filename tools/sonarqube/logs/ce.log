@@ -1,0 +1,42 @@
+2019.07.19 06:05:15 INFO  ce[][o.s.p.ProcessEntryPoint] Starting ce
+2019.07.19 06:05:15 INFO  ce[][o.s.ce.app.CeServer] Compute Engine starting up...
+2019.07.19 06:05:15 INFO  ce[][o.e.plugins] [Maxwell Dillon] modules [], plugins [], sites []
+2019.07.19 06:05:16 INFO  ce[][o.s.s.e.EsClientProvider] Connected to local Elasticsearch: [127.0.0.1:9001]
+2019.07.19 06:05:16 INFO  ce[][o.sonar.db.Database] Create JDBC data source for jdbc:h2:tcp://localhost:9092/sonar
+2019.07.19 06:05:16 WARN  ce[][o.s.d.DatabaseChecker] H2 database should be used for evaluation purpose only
+2019.07.19 06:05:17 INFO  ce[][o.s.s.p.ServerFileSystemImpl] SonarQube home: /opt/sonarqube
+2019.07.19 06:05:17 INFO  ce[][o.s.c.c.CePluginRepository] Load plugins
+2019.07.19 06:05:18 INFO  ce[][o.s.s.c.q.PurgeCeActivities] Delete the Compute Engine tasks created before Sun Jan 20 06:05:18 UTC 2019
+2019.07.19 06:05:18 INFO  ce[][o.s.ce.app.CeServer] Compute Engine is up
+2019.07.19 06:09:17 INFO  ce[][o.s.p.StopWatcher] Stopping process
+2019.07.19 06:09:17 INFO  ce[][o.s.ce.app.CeServer] Compute Engine shutting down...
+2019.07.19 06:09:59 INFO  ce[][o.s.p.ProcessEntryPoint] Starting ce
+2019.07.19 06:09:59 INFO  ce[][o.s.ce.app.CeServer] Compute Engine starting up...
+2019.07.19 06:09:59 INFO  ce[][o.e.plugins] [Kingpin] modules [], plugins [], sites []
+2019.07.19 06:10:00 INFO  ce[][o.s.s.e.EsClientProvider] Connected to local Elasticsearch: [127.0.0.1:9001]
+2019.07.19 06:10:00 INFO  ce[][o.sonar.db.Database] Create JDBC data source for jdbc:h2:tcp://localhost:9092/sonar
+2019.07.19 06:10:00 WARN  ce[][o.s.d.DatabaseChecker] H2 database should be used for evaluation purpose only
+2019.07.19 06:10:01 INFO  ce[][o.s.s.p.ServerFileSystemImpl] SonarQube home: /opt/sonarqube
+2019.07.19 06:10:01 INFO  ce[][o.s.c.c.CePluginRepository] Load plugins
+2019.07.19 06:10:02 INFO  ce[][o.s.s.c.q.PurgeCeActivities] Delete the Compute Engine tasks created before Sun Jan 20 06:10:02 UTC 2019
+2019.07.19 06:10:02 INFO  ce[][o.s.ce.app.CeServer] Compute Engine is up
+2019.07.19 06:37:04 INFO  ce[AWwI8sFX0NtPimxW88Eq][o.s.s.c.t.CeWorkerCallableImpl] Execute task | project=sonarqube-scanner-gradle | type=REPORT | id=AWwI8sFX0NtPimxW88Eq
+2019.07.19 06:37:07 INFO  ce[AWwI8sFX0NtPimxW88Eq][o.s.s.c.t.CeWorkerCallableImpl] Executed task | project=sonarqube-scanner-gradle | type=REPORT | id=AWwI8sFX0NtPimxW88Eq | time=2497ms
+2019.07.19 06:38:15 INFO  ce[AWwI89mD0NtPimxW88Er][o.s.s.c.t.CeWorkerCallableImpl] Execute task | project=sonarqube-scanner-gradle | type=REPORT | id=AWwI89mD0NtPimxW88Er
+2019.07.19 06:38:16 INFO  ce[AWwI89mD0NtPimxW88Er][o.s.s.c.t.CeWorkerCallableImpl] Executed task | project=sonarqube-scanner-gradle | type=REPORT | id=AWwI89mD0NtPimxW88Er | time=1208ms
+2019.07.19 06:40:04 INFO  ce[AWwI9YQV0NtPimxW88Es][o.s.s.c.t.CeWorkerCallableImpl] Execute task | project=sonarqube-scanner-gradle | type=REPORT | id=AWwI9YQV0NtPimxW88Es
+2019.07.19 06:40:05 INFO  ce[AWwI9YQV0NtPimxW88Es][o.s.s.c.t.CeWorkerCallableImpl] Executed task | project=sonarqube-scanner-gradle | type=REPORT | id=AWwI9YQV0NtPimxW88Es | time=1106ms
+2019.07.19 06:41:17 INFO  ce[AWwI9qNY0NtPimxW88Et][o.s.s.c.t.CeWorkerCallableImpl] Execute task | project=sonarqube-scanner-gradle | type=REPORT | id=AWwI9qNY0NtPimxW88Et
+2019.07.19 06:41:18 INFO  ce[AWwI9qNY0NtPimxW88Et][o.s.s.c.t.CeWorkerCallableImpl] Executed task | project=sonarqube-scanner-gradle | type=REPORT | id=AWwI9qNY0NtPimxW88Et | time=1319ms
+2019.07.19 07:22:22 INFO  ce[][o.s.p.StopWatcher] Stopping process
+2019.07.19 07:22:22 INFO  ce[][o.s.ce.app.CeServer] Compute Engine shutting down...
+2019.07.19 07:41:55 INFO  ce[][o.s.p.ProcessEntryPoint] Starting ce
+2019.07.19 07:41:55 INFO  ce[][o.s.ce.app.CeServer] Compute Engine starting up...
+2019.07.19 07:41:56 INFO  ce[][o.e.plugins] [Bloodshed] modules [], plugins [], sites []
+2019.07.19 07:41:56 INFO  ce[][o.s.s.e.EsClientProvider] Connected to local Elasticsearch: [127.0.0.1:9001]
+2019.07.19 07:41:56 INFO  ce[][o.sonar.db.Database] Create JDBC data source for jdbc:h2:tcp://localhost:9092/sonar
+2019.07.19 07:41:56 WARN  ce[][o.s.d.DatabaseChecker] H2 database should be used for evaluation purpose only
+2019.07.19 07:41:57 INFO  ce[][o.s.s.p.ServerFileSystemImpl] SonarQube home: /opt/sonarqube
+2019.07.19 07:41:58 INFO  ce[][o.s.c.c.CePluginRepository] Load plugins
+2019.07.19 07:41:58 INFO  ce[][o.s.s.c.q.PurgeCeActivities] Delete the Compute Engine tasks created before Sun Jan 20 07:41:58 UTC 2019
+2019.07.19 07:41:58 INFO  ce[][o.s.ce.app.CeServer] Compute Engine is up

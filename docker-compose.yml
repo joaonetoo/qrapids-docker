@@ -1,0 +1,263 @@
+version: '3.4'
+services:
+  db:
+    build:
+      network: host
+      context: tools/postgres
+      args:
+        - DB_NAME=postgres
+        - DB_USER=postgres
+        - DB_PASSWORD=example
+        - DB_LOCALE=pl_PL
+    container_name: qrapids_postgres
+    environment:
+    - DB_NAME=postgres
+    - DB_PASSWORD=example
+    - DB_LOCALE=pl_PL
+    ports:
+    - "5432:5432"
+    volumes:
+    - postgresql:/var/lib/postgresql/data
+    networks: 
+    - qrapids
+    restart: always
+
+  rbase:
+    image: qrapids/rbase:latest
+    container_name: qrapids_rbase
+    ports:
+    - "6311:6311"
+    networks: 
+    - qrapids
+    external_links:
+    - elasticsearch
+    - dashboard
+
+  qralert:
+    image: qrapids/qralert:latest
+    volumes:
+      - ./qralert/workdir/qr-alert.sh:/usr/src/app/qr-alert.sh
+      - ./qralert/workdir/rules/rules.js:/usr/src/app/rules/rules.js
+      - ./qralert/workdir/config.json:/usr/src/app/config.json
+    entrypoint: "/bin/bash"
+    command: "qr-alert.sh"
+    ports:
+      - "5051:5051"
+    networks: 
+      - qrapids
+    external_links:
+      - elasticsearch
+  
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.4.3
+    container_name: qrapids-elasticsearch
+    volumes:
+    - ./tools/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    ports:
+    - "9200:9200"
+    - "9300:9300"
+    environment:
+    - ES_JAVA_OPTS=-Xmx512m -Xms512m
+    networks:
+    - qrapids
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:5.4.3
+    container_name: qrapids-kibana
+    ports:
+    - "5601:5601"
+    environment:
+    - server.name=kibana
+    - server.host="0"
+    - ELASTICSEARCH_URL=http://elasticsearch:9200
+    - xpack.security.enabled=false
+    networks:
+    - qrapids
+    depends_on:
+    - elasticsearch
+    
+  zookeeper:
+    image: confluentinc/cp-zookeeper:3.2.1
+    container_name: qrapids-zookeeper
+    environment:
+    - ZOOKEEPER_CLIENT_PORT=2181
+    - ZOOKEEPER_TICK_TIME=2000
+    networks:
+    - qrapids
+
+  kafka:
+    image: confluentinc/cp-kafka:3.2.1
+    container_name: qrapids-kafka
+    depends_on:
+    - zookeeper
+    - elasticsearch
+    ports:
+    - 9092:9092
+    networks:
+    - qrapids
+    environment:
+    - KAFKA_BROKER_ID=1
+    - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+    - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+    - KAFKA_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+    - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+
+  qrconnect_sonar:
+    image: qrapids/qrconnect:latest
+    container_name: qrapids-qrconnect-sonarqube
+    depends_on:
+    - zookeeper
+    - kafka
+    - elasticsearch
+    - sonarqube 
+    networks:
+    - qrapids
+    entrypoint: "/bin/bash"
+    command: "./scripts/run.sonarqube.sh"
+    volumes:
+    - ./qrconnect/config:/home/run/config
+    - ./qrconnect/scripts:/home/run/scripts
+
+  qreval:
+    image: qrapids/qreval:latest
+    container_name: qrapids-qreval
+    depends_on:
+    - zookeeper
+    - kafka
+    - elasticsearch
+    - sonarqube 
+    - dashboard
+    environment:
+    - dashboard.notification.url=http://dashboard:8080/api/assessStrategicIndicators
+    networks:
+    - qrapids
+    volumes:
+    - ./qreval/projects:/projects
+
+  dashboard:
+    image: qrapids/dashboard:latest
+    container_name: qrapids-dashboard
+    environment:
+    - QRAPIDS_CONFIG_DIR=/opt/qrapids/conf/
+    - QRAPIDS_DATA_DIR=/opt/qrapids/data
+    - spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+    - spring.jpa.database=POSTGRESQL
+    - spring.jpa.show-sql=false
+    - spring.jmx.enabled=false
+    - spring.datasource.driver-class-name=org.postgresql.Driver
+    - spring.datasource.platform=postgres
+    - spring.datasource.url=jdbc:postgresql://db/postgres
+    - spring.datasource.username=postgres
+    - spring.datasource.password=example
+    - qma.ip=elasticsearch
+    - qma.port=9200
+    - spring.data.elasticsearch.cluster-name=qrapids-search
+    - spring.data.elasticsearch.cluster-nodes=qrapids-node:9300
+    - rawdata.dashboard=http://localhost:5601/app/kibana#/dashboards?_g=()
+    - forecast.url=http://forecast-rest:8082 
+    - forecast.technique=ETS
+    - backlog.url=../api/addToBacklog
+    - assessSI.url=http://siassessment-rest:8082
+    - pabre.url=http://pabrews:8080/pabre-ws # <--- here must be IP !!!
+    - fakeData=false
+    - security.enable=false
+    - security.api.enable=false
+    - server.port=8080
+    - server.url=http://localhost:8080 
+    ports:
+    - "8080:8080"
+    links:
+    - db
+    external_links:
+    - elasticsearch
+    - kafka
+    - rbase
+    - siassessment-rest
+    - forecast-rest
+    networks:
+    - qrapids
+   
+  siassessment-rest:
+    image: qrapids/si-assessment-rest:latest
+    container_name: qrapids-siassessment-rest
+    networks:
+    - qrapids
+
+  forecast-rest:
+    image: qrapids/forecast-rest:latest
+    container_name: qrapids-forecast-rest
+    external_links:
+    - rbase
+    environment:
+    - Rserve.host=rbase
+    - Rserve.port=6311
+    - Rscripts.location=/usr/local/src/app/TimeSeriesFunctions_GPL_0.4.R  
+    networks:
+    - qrapids
+
+  
+  backlog-openproject:
+    image: qrapids/backlog-openproject:latest
+    container_name: qrapids-backlog-openproject
+    networks:
+    - qrapids
+    environment:
+    - server.port=
+    - openproject.url=
+    - openproject.apikey=
+    - openproject.project.name=
+    - openproject.requirement.type=
+
+  backlog-jira:
+    image: qrapids/backlog-jira:latest
+    container_name: qrapids-backlog-jira
+    networks:
+    - qrapids
+    environment:
+    - jira.server=
+    - jira.user=
+    - jira.password=
+    - jira.project.component.name=generated_by_qrapids
+    - jira.project.component.description=This issue was generated by Q-Rapids dashboard
+    - jira.project.component.lead=
+
+  sonarqube:
+    image: sonarqube:6.3
+    container_name: qrapids-sonarqube
+    ports:
+      - "4875:9000"
+    networks:
+      - qrapids
+    volumes:
+    - ./tools/sonarqube/conf:/opt/sonarqube/conf
+    - ./tools/sonarqube/data:/opt/sonarqube/data
+    - ./tools/sonarqube/logs:/opt/sonarqube/logs
+
+  pabrews:
+    image: qrapids/pabrews:latest
+    container_name: qrapids-pabrews
+    ports:
+      - "8085:8080"
+    networks:
+    - qrapids
+  
+
+  sample-projects:
+    build:
+      network: host
+      context: tools/sample-projects
+    container_name: qrapids-sample-projects
+    # cmd: 'gradle -Dsonar.host.url=http://sonarqube:9000 sonarqube'
+    entrypoint: './gradlew build'
+    external_links:
+    - sonarqube
+    volumes:
+    - ./tools/sample-projects/projects:/app
+    networks:
+    - qrapids
+
+networks:
+  qrapids:
+    driver: bridge 
+volumes:
+  postgresql:
