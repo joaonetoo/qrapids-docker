@@ -15,7 +15,7 @@ docker-compose build
 ```
 Please notice that this make take some time to finish.
 
-
+The used images are available at [DockerHub](https://hub.docker.com/u/qrapids).
 # Quick Start
 
 After building all images, we can set up the entire environment including PostgresSQL, Sonarcube, Elasticsearch, Kafka, and Zookeeper
