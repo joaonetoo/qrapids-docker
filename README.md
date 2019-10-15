@@ -62,8 +62,9 @@ The main page view, available on the port 8080:
 
 # Documentation
 
-You can find all the information you need in this repository [Wiki](https://github.com/q-rapids/q-rapids/wiki).
+The information to configure  the docker to deploy your own qr-connect and configuring your own quality model is availabe at [this repository Wiki](https://github.com/q-rapids/qrapids-docker/wiki).
 
+You can find all the information you need related to the tool in [q-rapids repository Wiki](https://github.com/q-rapids/q-rapids/wiki).
 
 
 # Contributing
