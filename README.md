@@ -49,6 +49,13 @@ The main page view, available on the port 8080:
 
 ![](./docs/dashboard.png)
 
+If you don't see any chart in the main view, you need to create a strategic indicator manually:
+1. Click on "New SI" button (at the top)
+1. Modify, if needed, the categories presented
+1. Click on "Save" button to save the categories that are going to be used in the different charts
+1. Create a new strategic indicator including the name and selecting all the factors from the left to the right lists
+1. Click on "Save" button
+
 # Exposed ports
 
 * Dashboard port: 8080
