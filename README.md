@@ -6,6 +6,8 @@ Repository with general information about Q-Rapids H2020 project and the softwar
 
 This project has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement No 732253.
 
+You can find a video tutorial to deploy Q-Rapids docker in the following [link](https://www.youtube.com/watch?v=59uvHvhZJbI) <img src="https://raw.githubusercontent.com/wiki/q-rapids/qrapids-dashboard/images/logos/youtube_social_icon_red.png" width="20" 
+ alt="YouTube"> <br>
 # Build images
 
 Go to the main directory where the docker-compose file is located and follow the instruction
