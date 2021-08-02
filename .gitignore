@@ -1,0 +1,4 @@
+/tools/sonarqube/
+
+/storage/*
+!.keep

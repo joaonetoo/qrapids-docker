@@ -14,10 +14,11 @@ services:
     - DB_NAME=postgres
     - DB_PASSWORD=example
     - DB_LOCALE=pl_PL
+    - POSTGRES_HOST_AUTH_METHOD=trust
     ports:
     - "5432:5432"
     volumes:
-    - postgresql:/var/lib/postgresql/data
+    - postgresql_data:/var/lib/postgresql/data
     restart: always
 
   rbase:
@@ -182,6 +183,7 @@ services:
     ports:
       - "4875:9000"
     volumes:
+    - ./tools/sonarqube/extensions:/opt/sonarqube/extensions
     - ./tools/sonarqube/data:/opt/sonarqube/data
     - ./tools/sonarqube/logs:/opt/sonarqube/logs
 
@@ -223,4 +225,9 @@ services:
     - sonarqube
 
 volumes:
-  postgresql:
+  postgresql_data:
+    driver_opts:
+      type: none
+      device: $PWD/storage
+      o: bind
+    
